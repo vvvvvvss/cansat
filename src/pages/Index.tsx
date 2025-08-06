@@ -1,7 +1,13 @@
+import { useState } from 'react';
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
 import DataCard from '@/components/DataCard';
-import StatusPanel from '@/components/StatusPanel';
+import EnhancedStatusPanel from '@/components/EnhancedStatusPanel';
+import MissionTimer from '@/components/MissionTimer';
+import DataVisualization from '@/components/DataVisualization';
+import TrajectoryVisualization from '@/components/TrajectoryVisualization';
+import GPSMapping from '@/components/GPSMapping';
+import LoadingScreen from '@/components/LoadingScreen';
 import { 
   Thermometer, 
   Gauge, 
@@ -14,6 +20,8 @@ import {
 } from 'lucide-react';
 
 const Index = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   // Mock data for demonstration
   const sensorData = [
     {
@@ -82,6 +90,12 @@ const Index = () => {
     }
   ];
 
+  if (isLoading) {
+    return (
+      <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -89,6 +103,15 @@ const Index = () => {
       
       {/* Main Dashboard */}
       <section className="container mx-auto px-6 py-12">
+        {/* Mission Timer */}
+        <div className="mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1">
+              <MissionTimer startTime={new Date(Date.now() - 2700000)} isActive={true} />
+            </div>
+          </div>
+        </div>
+
         <div className="mb-8">
           <h2 className="text-3xl font-bold text-foreground mb-2">Live Telemetry Data</h2>
           <p className="text-muted-foreground">Real-time sensor readings from your CanSat</p>
@@ -96,7 +119,7 @@ const Index = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-12">
           <div className="lg:col-span-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
               {sensorData.map((sensor, index) => (
                 <DataCard
                   key={index}
@@ -109,11 +132,28 @@ const Index = () => {
                 />
               ))}
             </div>
+            
+            {/* Data Visualization Section */}
+            <div className="space-y-6">
+              <DataVisualization />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <TrajectoryVisualization />
+                <GPSMapping />
+              </div>
+            </div>
           </div>
           
           <div className="lg:col-span-1">
-            <StatusPanel />
+            <EnhancedStatusPanel />
           </div>
+        </div>
+      </section>
+
+      {/* Mission Information Section */}
+      <section className="container mx-auto px-6 pb-12">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-foreground mb-2">Mission Information</h2>
+          <p className="text-muted-foreground">Detailed mission parameters and status</p>
         </div>
 
         {/* Mission Info */}
