@@ -1,17 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Signal, 
-  Wifi, 
-  Battery, 
-  Thermometer, 
-  Rocket,
-  Parachute,
-  MapPin,
-  Camera,
-  Radio
-} from 'lucide-react';
+import { Signal, Wifi, Battery, Thermometer, Rocket, PackageSearch as Parachute, MapPin, Camera, Radio } from 'lucide-react';
 
 const EnhancedStatusPanel = () => {
   const missionPhases = [
